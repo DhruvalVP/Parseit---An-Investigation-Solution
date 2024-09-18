@@ -9,7 +9,7 @@ app = Flask(__name__)
 socketio = SocketIO(app)
 
 # Initialize the model
-model = OllamaLLM(model="llama3", stream=True)
+model = OllamaLLM(model="llama3-agent", stream=True)
 
 # Create a JSON file for conversation history if it doesn't exist or is empty
 if not os.path.exists("conversation_history.json") or os.stat("conversation_history.json").st_size == 0:
