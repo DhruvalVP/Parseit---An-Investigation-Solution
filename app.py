@@ -51,7 +51,7 @@ app = Flask(__name__)
 socketio = SocketIO(app)
 
 # Initialize the model
-model = OllamaLLM(model="dolphin-agent", stream=True)
+model = OllamaLLM(model="llama3-agent", stream=True)
 history_manager = ConversationHistoryManager("conversation_history.json")
 
 
