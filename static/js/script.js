@@ -110,41 +110,41 @@ newChatBtn.addEventListener('click', function() {
 });
 
 // Add custom styles
-const style = document.createElement('style');
-style.textContent = `
-    .message {
-        margin-bottom: 10px;
-        font-family: 'Courier New', monospace;
-    }
-    .message-content {
-        padding: 8px;
-        border-radius: 5px;
-        background-color: #0f1e0f;
-        border: 1px solid #00ff00;
-    }
-    .message-prefix {
-        font-weight: bold;
-        color: #00ff00;
-    }
-    .code-block {
-        background-color: #1a2e1a;
-        border: 1px solid #00ff00;
-        border-radius: 5px;
-        margin-top: 5px;
-    }
-    .code-header {
-        background-color: #005000;
-        color: #00ff00;
-        padding: 2px 5px;
-        border-bottom: 1px solid #00ff00;
-    }
-    .code-text {
-        margin: 0;
-        padding: 5px;
-        white-space: pre-wrap;
-    }
-`;
-document.head.appendChild(style);
+// const style = document.createElement('style');
+// style.textContent = `
+//     .message {
+//         margin-bottom: 10px;
+//         font-family: 'Courier New', monospace;
+//     }
+//     .message-content {
+//         padding: 8px;
+//         border-radius: 5px;
+//         background-color: #0f1e0f;
+//         border: 1px solid #00ff00;
+//     }
+//     .message-prefix {
+//         font-weight: bold;
+//         color: #00ff00;
+//     }
+//     .code-block {
+//         background-color: #1a2e1a;
+//         border: 1px solid #00ff00;
+//         border-radius: 5px;
+//         margin-top: 5px;
+//     }
+//     .code-header {
+//         background-color: #005000;
+//         color: #00ff00;
+//         padding: 2px 5px;
+//         border-bottom: 1px solid #00ff00;
+//     }
+//     .code-text {
+//         margin: 0;
+//         padding: 5px;
+//         white-space: pre-wrap;
+//     }
+// `;
+// document.head.appendChild(style);
 
 // Initialize first chat
 newChatBtn.click();
