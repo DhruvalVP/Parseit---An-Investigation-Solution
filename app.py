@@ -33,7 +33,7 @@ class ConversationHistoryManager:
         # Only retrieve the last few history entries
         recent_history = self.history[-self.max_history_size:]
         for entry in recent_history:
-            history_str += f"User: {entry['User']}\nAssistant: {entry['Assistant']}\n"
+            history_str += f"User: {entry['User']}\nAssistant: {entry['Assistant']}\n\n"
         return history_str + f"User: {user_input}\nAssistant: "
 
     def update_history(self, user_input, assistant_response):
@@ -74,9 +74,9 @@ def handle_message(data):
     response = ""
     for chunk in result:
         response += chunk
-        # Use JSON to properly encode newlines
-        socketio.emit('ollama_response', json.dumps({'response': response}))
-        # time.sleep(0.02)  # Slight delay to simulate real-time typing
+        # Use JSON to properly encode newlines and escape special characters
+        socketio.emit('ollama_response', json.dumps({'response': response}, ensure_ascii=False))
+        # time.sleep(0.02)  # Slight delay to simulate real-time typing (uncomment if needed)
 
     # Update the history with the new user input and assistant response
     history_manager.update_history(user_input, response)
@@ -84,6 +84,6 @@ def handle_message(data):
 
 if __name__ == "__main__":
     socketio.run(app, debug=True)
-    # Replace with your actual local IP address
+    # Uncomment and replace with your actual local IP address if needed
     # local_ip = '192.168.1.8'
     # socketio.run(app, host=local_ip, debug=True)

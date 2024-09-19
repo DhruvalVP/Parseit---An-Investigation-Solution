@@ -66,7 +66,9 @@ function updateAIMessage(text) {
     
     const contentDiv = aiMessageDiv.querySelector('.message-content');
     const formattedText = formatCodeBlocks(text);
-    contentDiv.innerHTML = `<span class="message-prefix">zero:</span> ${formattedText}`;
+    // Replace newlines with <br> tags for proper HTML rendering
+    const htmlText = formattedText.replace(/\n/g, '<br>');
+    contentDiv.innerHTML = `<span class="message-prefix">zero:</span> ${htmlText}`;
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
