@@ -14,7 +14,7 @@ function addUserMessage(text) {
     
     const contentDiv = document.createElement('div');
     contentDiv.classList.add('message-content');
-    contentDiv.innerHTML = `<span class="message-prefix">User:</span> ${escapeHtml(text)}`;
+    contentDiv.innerHTML = `<span class="message-prefix">User:</span> ${escapeHtml(text).replace(/\n/g, '<br>')}`;
     
     messageDiv.appendChild(contentDiv);
     chatMessages.appendChild(messageDiv);
@@ -52,6 +52,18 @@ function escapeHtml(unsafe) {
          .replace(/'/g, "&#039;");
 }
 
+// Function to format text with bold, underline, and bullet points
+function formatText(text) {
+    // Bold and underline (text between double asterisks)
+    text = text.replace(/\*\*(.*?)\*\*/g, '<strong><u>$1</u></strong>');
+    
+    // Bullet points (lines starting with a single asterisk)
+    text = text.replace(/^\* (.+)$/gm, '<li>$1</li>');
+    text = text.replace(/<li>(.+)<\/li>/g, '<ul><li>$1</li></ul>');
+
+    return text;
+}
+
 // Function to handle AI message updates
 function updateAIMessage(text) {
     if (!aiMessageDiv) {
@@ -65,7 +77,8 @@ function updateAIMessage(text) {
     }
     
     const contentDiv = aiMessageDiv.querySelector('.message-content');
-    const formattedText = formatCodeBlocks(text);
+    let formattedText = formatCodeBlocks(text);
+    formattedText = formatText(formattedText);
     // Replace newlines with <br> tags for proper HTML rendering
     const htmlText = formattedText.replace(/\n/g, '<br>');
     contentDiv.innerHTML = `<span class="message-prefix">zero:</span> ${htmlText}`;
@@ -80,6 +93,7 @@ function handleSend() {
         userInput.value = '';
         aiMessageDiv = null;
         
+        // Preserve newlines in the message
         socket.emit('user_message', { message: message });
     }
 }
@@ -93,11 +107,14 @@ socket.on('ollama_response', (data) => {
 // Attach event listener for the send button
 sendButton.addEventListener('click', handleSend);
 
-// Allow sending message via pressing "Enter"
-userInput.addEventListener('keypress', (e) => {
+// Allow sending message via pressing "Enter" and add new line on "Shift + Enter"
+userInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
         handleSend();
+    } else if (e.key === 'Enter' && e.shiftKey) {
+        // Allow default behavior for Shift + Enter (new line)
+        return;
     }
 });
 
@@ -106,6 +123,10 @@ newChatBtn.addEventListener('click', function() {
     currentChatId = Date.now();
     chatMessages.innerHTML = '';
     aiMessageDiv = null;
+    
+    // Clear chat history on the server
+    socket.emit('clear_history');
+    
     updateAIMessage("Initializing new operation. How may I assist you?");
 });
 
@@ -142,6 +163,10 @@ style.textContent = `
         margin: 0;
         padding: 5px;
         white-space: pre-wrap;
+    }
+    ul {
+        margin: 0;
+        padding-left: 20px;
     }
 `;
 document.head.appendChild(style);
