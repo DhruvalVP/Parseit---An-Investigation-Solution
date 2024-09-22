@@ -45,7 +45,7 @@ class ConversationHistoryManager:
 app = Flask(__name__)
 socketio = SocketIO(app)
 
-model = OllamaLLM(model="llama3-agent", stream=True)
+model = OllamaLLM(model="llama3", stream=True)
 history_manager = ConversationHistoryManager("conversation_history.json")
 
 @app.route('/')
